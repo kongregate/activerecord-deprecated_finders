@@ -2,5 +2,5 @@ source 'https://rubygems.org'
 
 gemspec :path => '..'
 
-gem 'rails', github: 'rails/rails', branch: 'master'
+gem 'rails', github: 'kongregate/rails', branch: 'fix-activerecord-deprecated_finders-find-symbol'
 gem 'arel', github: 'rails/arel', branch: 'master'
