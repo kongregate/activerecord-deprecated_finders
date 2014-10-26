@@ -7,7 +7,8 @@ module ActiveRecord
         if scope.is_a?(Hash)
           ActiveSupport::Deprecation.warn(
             "Calling #scope or #default_scope with a hash is deprecated. Please use a lambda " \
-            "containing a scope. E.g. scope :red, -> { where(color: 'red') }"
+            "containing a scope. E.g. scope :red, -> { where(color: 'red') }",
+            caller(2)
           )
 
           new(klass, scope)
@@ -34,9 +35,11 @@ module ActiveRecord
 
             if @scope.respond_to?(:source_location)
               msg << "(The scope was defined at #{@scope.source_location.join(':')}.)"
+            else
+              callstack = caller(2)
             end
 
-            ActiveSupport::Deprecation.warn(msg)
+            ActiveSupport::Deprecation.warn(msg, callstack)
           end
         else
           result = @scope
@@ -59,7 +62,7 @@ module ActiveRecord
     end
 
     def scoped(options = nil)
-      ActiveSupport::Deprecation.warn("Model.scoped is deprecated. Please use Model.all instead.")
+      ActiveSupport::Deprecation.warn("Model.scoped is deprecated. Please use Model.all instead.", caller(2))
       options ? all.apply_finder_options(options, true) : all
     end
 
@@ -75,7 +78,8 @@ module ActiveRecord
       ActiveSupport::Deprecation.warn(
         "ActiveRecord::Base#with_scope and #with_exclusive_scope are deprecated. " \
         "Please use ActiveRecord::Relation#scoping instead. (You can use #merge " \
-        "to merge multiple scopes together.)"
+        "to merge multiple scopes together.)",
+        caller(2)
       )
 
       # If another Active Record class has been passed in, get its current scope
