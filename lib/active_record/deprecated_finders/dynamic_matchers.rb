@@ -25,7 +25,7 @@ module ActiveRecord
       end
 
       def deprecation_warning
-        %{ActiveSupport::Deprecation.warn("This dynamic method is deprecated. Please use e.g. #{deprecation_alternative} instead.")}
+        %*ActiveSupport::Deprecation.warn("This dynamic method is deprecated. Please use e.g. #{deprecation_alternative} instead.", caller.reject { |line| line =~ /activerecord-deprecated_finders/ })*
       end
     end
 
